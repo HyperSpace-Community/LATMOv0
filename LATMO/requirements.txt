@@ -1,0 +1,16 @@
+fastapi==0.109.2
+uvicorn==0.27.1
+pydantic==2.6.1
+langchain==0.1.0
+langchain-groq==0.0.1
+langchain-google-genai==0.0.6
+langchain-community==0.0.16
+langchain-ollama==0.0.1
+google-auth-oauthlib==1.2.0
+google-auth-httplib2==0.2.0
+google-api-python-client==2.116.0
+soundfile==0.12.1
+uuid==1.30
+wikipedia==1.4.0
+duckduckgo-search==4.4.3 
+arxiv

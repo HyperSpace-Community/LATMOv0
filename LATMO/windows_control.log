@@ -1,0 +1,55 @@
+2025-03-07 15:32:03,680 - googleapiclient.discovery_cache - INFO - file_cache is only supported with oauth2client<4.0.0
+2025-03-07 15:32:09,943 - datasets - INFO - PyTorch version 2.6.0+cu124 available.
+2025-03-07 15:32:11,296 - sentence_transformers.SentenceTransformer - INFO - Use pytorch device_name: cuda
+2025-03-07 15:32:11,296 - sentence_transformers.SentenceTransformer - INFO - Load pretrained SentenceTransformer: all-MiniLM-L6-v2
+2025-03-07 15:32:15,573 - chromadb.telemetry.product.posthog - INFO - Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+2025-03-07 15:32:16,765 - WindowsControl - INFO - Windows Control Agent initialized successfully
+2025-03-07 15:32:20,493 - sentence_transformers.SentenceTransformer - INFO - Use pytorch device_name: cuda
+2025-03-07 15:32:20,493 - sentence_transformers.SentenceTransformer - INFO - Load pretrained SentenceTransformer: all-MiniLM-L6-v2
+2025-03-07 15:32:24,495 - googleapiclient.discovery_cache - INFO - file_cache is only supported with oauth2client<4.0.0
+2025-03-07 15:32:26,088 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-07 15:32:47,686 - sentence_transformers.SentenceTransformer - INFO - Use pytorch device_name: cuda
+2025-03-07 15:32:47,691 - sentence_transformers.SentenceTransformer - INFO - Load pretrained SentenceTransformer: all-MiniLM-L6-v2
+2025-03-07 15:32:52,450 - googleapiclient.discovery_cache - INFO - file_cache is only supported with oauth2client<4.0.0
+2025-03-07 15:32:53,535 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-07 15:51:51,877 - googleapiclient.discovery_cache - INFO - file_cache is only supported with oauth2client<4.0.0
+2025-03-07 15:51:51,892 - WindowsControl - INFO - Windows Control Agent initialized successfully
+2025-03-07 15:52:47,419 - googleapiclient.discovery_cache - INFO - file_cache is only supported with oauth2client<4.0.0
+2025-03-07 15:52:47,423 - WindowsControl - INFO - Windows Control Agent initialized successfully
+2025-03-07 15:53:24,817 - googleapiclient.discovery_cache - INFO - file_cache is only supported with oauth2client<4.0.0
+2025-03-07 15:53:24,819 - WindowsControl - INFO - Windows Control Agent initialized successfully
+2025-03-07 15:55:33,695 - googleapiclient.discovery_cache - INFO - file_cache is only supported with oauth2client<4.0.0
+2025-03-07 15:55:33,696 - WindowsControl - INFO - Windows Control Agent initialized successfully
+2025-03-07 15:55:39,410 - googleapiclient.discovery_cache - INFO - file_cache is only supported with oauth2client<4.0.0
+2025-03-07 15:58:08,779 - googleapiclient.discovery_cache - INFO - file_cache is only supported with oauth2client<4.0.0
+2025-03-07 15:58:08,787 - WindowsControl - INFO - Windows Control Agent initialized successfully
+2025-03-07 15:58:28,592 - googleapiclient.discovery_cache - INFO - file_cache is only supported with oauth2client<4.0.0
+2025-03-07 15:58:30,361 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-07 16:06:54,052 - googleapiclient.discovery_cache - INFO - file_cache is only supported with oauth2client<4.0.0
+2025-03-07 16:06:54,052 - WindowsControl - INFO - Windows Control Agent initialized successfully
+2025-03-07 16:06:59,352 - googleapiclient.discovery_cache - INFO - file_cache is only supported with oauth2client<4.0.0
+2025-03-07 16:07:00,520 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-07 16:10:15,944 - googleapiclient.discovery_cache - INFO - file_cache is only supported with oauth2client<4.0.0
+2025-03-07 16:10:15,948 - WindowsControl - INFO - Windows Control Agent initialized successfully
+2025-03-07 16:10:23,820 - googleapiclient.discovery_cache - INFO - file_cache is only supported with oauth2client<4.0.0
+2025-03-07 16:10:24,908 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-07 16:10:41,411 - googleapiclient.discovery_cache - INFO - file_cache is only supported with oauth2client<4.0.0
+2025-03-07 16:10:42,422 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-07 16:10:42,766 - googleapiclient.discovery_cache - INFO - file_cache is only supported with oauth2client<4.0.0
+2025-03-07 16:10:43,750 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-07 16:10:44,080 - googleapiclient.discovery_cache - INFO - file_cache is only supported with oauth2client<4.0.0
+2025-03-07 16:10:44,800 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-07 16:10:45,802 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-07 16:10:46,155 - googleapiclient.discovery_cache - INFO - file_cache is only supported with oauth2client<4.0.0
+2025-03-07 16:10:46,513 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-03-07 16:10:46,513 - groq._base_client - INFO - Retrying request to /openai/v1/chat/completions in 3.000000 seconds
+2025-03-07 16:12:20,703 - googleapiclient.discovery_cache - INFO - file_cache is only supported with oauth2client<4.0.0
+2025-03-07 16:12:20,703 - WindowsControl - INFO - Windows Control Agent initialized successfully
+2025-03-07 16:12:27,763 - googleapiclient.discovery_cache - INFO - file_cache is only supported with oauth2client<4.0.0
+2025-03-07 16:12:28,919 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-07 16:12:47,743 - googleapiclient.discovery_cache - INFO - file_cache is only supported with oauth2client<4.0.0
+2025-03-07 16:12:49,918 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-07 16:13:00,927 - googleapiclient.discovery_cache - INFO - file_cache is only supported with oauth2client<4.0.0
+2025-03-07 16:13:00,936 - WindowsControl - INFO - Windows Control Agent initialized successfully
+2025-03-07 16:13:14,979 - googleapiclient.discovery_cache - INFO - file_cache is only supported with oauth2client<4.0.0
+2025-03-07 16:13:16,331 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
