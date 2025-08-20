@@ -41,7 +41,7 @@ async def chat(request: ChatRequest):
         response = process_message(request.message)
         return {
             "response": response,
-            "model": "LATMO",
+            "model": "LATMOv0",
             "usage": {
                 "completion_tokens": len(response),
                 "total_tokens": len(request.message) + len(response)

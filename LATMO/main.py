@@ -8,6 +8,11 @@ import threading
 import time
 from typing import Optional, List, Dict, Any
 import pickle
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
+
 # -------------------- Dynamic Libraries --------------------------------
 from langchain.agents import AgentType, Tool, initialize_agent
 from langchain.memory import ConversationBufferMemory
@@ -19,6 +24,8 @@ from langchain_community.utilities import WikipediaAPIWrapper
 from langchain_groq import ChatGroq
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_ollama.llms import OllamaLLM
+# Add OpenRouter support
+from langchain_openai import ChatOpenAI
 from google.oauth2.credentials import Credentials
 from google.auth.transport.requests import Request
 from google_auth_oauthlib.flow import InstalledAppFlow
@@ -33,70 +40,151 @@ import pickle
 import os.path
 from datetime import datetime
 
-# LangSmith
-top_level_llm = OllamaLLM(
-    temperature=0.7,
-    model="deepseek-r1:7b"
-)
+# OpenRouter Configuration Function
+def get_openrouter_llm(model: str = "mistralai/mistral-nemo:free", temperature: float = 0.7) -> ChatOpenAI:
+    """
+    Create an OpenRouter LLM instance using the ChatOpenAI wrapper.
+    
+    Args:
+        model: The model name from OpenRouter (e.g., "mistralai/mistral-nemo:free")
+        temperature: Model temperature for response randomness
+    
+    Returns:
+        ChatOpenAI instance configured for OpenRouter
+    """
+    openrouter_api_key = os.getenv("OPENROUTER_API_KEY")
+    openrouter_base_url = os.getenv("OPENROUTER_BASE_URL", "https://openrouter.ai/api/v1")
+    
+    if not openrouter_api_key:
+        raise ValueError("OPENROUTER_API_KEY environment variable is not set")
+    
+    return ChatOpenAI(
+        model=model,
+        temperature=temperature,
+        openai_api_key=openrouter_api_key,
+        openai_api_base=openrouter_base_url,
+        # Optional: Add headers for OpenRouter leaderboards
+        default_headers={
+            "HTTP-Referer": "https://your-app-url.com",  # Replace with your app URL
+            "X-Title": "LATMO"
+        }
+    )
 
+# Update your LLM configurations
+try:
+    # Replace the top_level_llm with OpenRouter Mistral Nemo
+    top_level_llm = ChatGoogleGenerativeAI(
+        temperature=0.1,
+        model="gemini-2.5-flash-lite-preview-06-17"
+    )
+    
+    # You can also replace other LLMs if needed
+    # Example: Replace coder_llm with a different OpenRouter model
+    coder_llm = ChatGroq(
+        model="qwen-qwq-32b",  # Alternative free coding model
+        temperature=0
+    )
+    
+    # Keep existing models or replace as needed
+    wikipedia_llm = ChatGoogleGenerativeAI(
+        temperature=0.1,
+        model="gemini-2.5-flash-lite-preview-06-17"
+    )
+    
+    
+    search_llm = ChatGoogleGenerativeAI(
+        temperature=0.1,
+        model="gemini-2.5-flash-lite-preview-06-17"
+    )
+    
+    
+    gmail_llm = get_openrouter_llm(
+        temperature=0.1,
+        model="google/gemini-2.5-flash-lite-preview-06-17"
+    )
+    
+    # You could also use OpenRouter for calendar operations
+    calender_llm = ChatGroq(
+        model="qwen-qwq-32b",  # Alternative free model
+        temperature=0.1
+    )
+    
+    # Windows Control LLM could also use OpenRouter
+    calender_llm = ChatGroq(
+        model="qwen-qwq-32b",  # Alternative free model
+        temperature=0.1
+    )
+    
+    print("✅ OpenRouter integration successful!")
+    print(f"✅ Main LLM: mistralai/mistral-nemo:free")
+    
+except Exception as e:
+    print(f"❌ Error setting up OpenRouter: {e}")
+    print("🔄 Falling back to original configuration...")
+    
+    # Fallback to original configuration
+    top_level_llm = ChatGoogleGenerativeAI(
+        temperature=0.7,
+        model="gemini-2.5-flash"
+    )
+    
+    coder_llm = ChatGroq(
+        temperature=0,
+        model="qwen-2.5-coder-32b"
+    )
+    
+    wikipedia_llm = ChatGoogleGenerativeAI(
+        temperature=0.1,
+        model="gemini-2.5-flash"
+    )
+    
+    search_llm = ChatGoogleGenerativeAI(
+        temperature=0.1,
+        model="gemini-2.5-flash"
+    )
+    
+    gmail_llm = ChatGoogleGenerativeAI(
+        model="gemini-2.5-flash"
+    )
+    
+    calender_llm = ChatGroq(
+        model="llama-3.3-70b-versatile"
+    )
+    
+    windows_control_llm = ChatGroq(
+        temperature=0,
+        model="llama-3.3-70b-versatile"
+    )
 
 # Add top-level memory for the main agent
 top_level_memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
 
-coder_llm = ChatGroq(
-    temperature=0,
-    model="qwen-2.5-coder-32b"
-)
-
-wikipedia_llm = OllamaLLM(
-    temperature=0.1,
-    model="gemma2"
-)
-
-search_llm = OllamaLLM(
-    temperature=0.1,
-    model="gemma2"
-)
-
-gmail_llm = ChatGroq(
-    model="llama-3.3-70b-versatile"
-)
-
-calender_llm = ChatGroq(
-    model="llama-3.3-70b-versatile"
-)
-
-# Add Windows Control LLM
-windows_control_llm = ChatGroq(
-    temperature=0,
-    model="llama-3.3-70b-versatile"
-)
-
 memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
 
-LLMama = lambda x: ChatGroq(
-    temperature=0,
-    model="llama-3.3-70b-versatile",
-    messages=[{"role": "user", "content": x}]
-)
+# Update your lambda functions to potentially use OpenRouter
+def create_openrouter_lambda(model_name: str, temperature: float = 0):
+    """Create a lambda function that uses OpenRouter models"""
+    try:
+        llm = get_openrouter_llm(model=model_name, temperature=temperature)
+        return lambda x: llm.invoke(x).content
+    except:
+        # Fallback to Groq if OpenRouter fails
+        return lambda x: ChatGroq(
+            temperature=temperature,
+            model="llama-3.3-70b-versatile"
+        ).invoke(x).content
 
-Coder = lambda x: ChatGroq(
-    temperature=0,
-    model="llama-3.3-70b-versatile",
-    messages=[{"role": "user", "content": x}]
-)
+# Alternatively, keep the original if you prefer
+# LLMama = lambda x: ChatGroq(
+#     temperature=0,
+#     model="llama-3.3-70b-versatile",
+#     messages=[{"role": "user", "content": x}]
+# )
 
-LLM_tool = Tool(name="Assistant", func=lambda x: LLMama(x),
-                description="You are useful when there is no tool to use. Don't use this Tool if the answer is "
-                            "generated by existing Tools. Use datetime_tool to fetch current date and time. Don't "
-                            "interfere when there is already an answer from the other Tools")
-
-Coder_tool = Tool(name="Assistant", func=lambda x: LLMama(x),
-                  description="You are used for programming, you are useful for any coding tasks. write the code based "
-                              "on the instructions")
-
-Writer_agent = Tool(name="Wr_Assist", func=lambda x: LLMama(x),
-                    description="You are used to write letters, write documents, making a research.")
+# Coder = lambda x: ChatGroq(
+#     temperature=0,
+#     model="llama-3.3-70b-versatile",
+#     messages=[{"role": "user", "content": x}
 
 # First, let's modify the datetime_tool to be a function we can easily reuse
 def get_current_datetime(query=None):  # Add optional parameter to handle tool calls
@@ -799,9 +887,14 @@ class PrioritizedMemoryAgent:
         return self.agent.run(query)
 
 # Combine all tools
-all_tools = [datetime_tool] + wikipedia_tools + [LLM_tool, duckduckgo_tool, Writer_agent,
-             Coder_tool] + gmail_tools +  google_calendar_tools + table_tools
-
+all_tools = (
+    [datetime_tool]
+    + wikipedia_tools
+    + [duckduckgo_tool]  # Wrap duckduckgo_tool in a list
+    + gmail_tools
+    + google_calendar_tools
+    + table_tools
+)
 
 def create_specialized_agent(llm, tools, instructions):
     memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
@@ -810,7 +903,7 @@ def create_specialized_agent(llm, tools, instructions):
         llm=llm,
         agent=AgentType.CONVERSATIONAL_REACT_DESCRIPTION,
         memory=memory,
-        verbose=True,
+        verbose=False,
         handle_parsing_errors=True
     )
 
@@ -848,19 +941,12 @@ calendar_agent = create_specialized_agent(
     If an error occurs, provide a helpful explanation of what went wrong."""
 )
 
-coder_agent = create_specialized_agent(
-    coder_llm,
-    tools=[Coder_tool],
-    instructions="You are a specialized agent for coding operations. Use the Coder tool for programming purposes"
-)
-
 # Update specialized_tools list to use the new calendar agent
 specialized_tools = [
     Tool(name="Wikipedia", func=wikipedia_agent.run, description="Use for Wikipedia searches."),
     Tool(name="Internet_search", func=search_agent.run, description="Use to search the web"),
     Tool(name="Gmail Operations", func=gmail_agent.run, description="Use for all Gmail-related tasks"),
     Tool(name="Datetime", func=get_current_datetime, description="Used to fetch current date and time"),
-    Tool(name='Coder', func=coder_agent.run, description="Use to write code"),
     Tool(name="Calendar", func=calendar_agent.run, 
          description="""Use for all Google Calendar operations including:
          - Creating new events with proper date/time handling
@@ -921,7 +1007,7 @@ top_level_agent = initialize_agent(
     llm=top_level_llm,
     agent=AgentType.CONVERSATIONAL_REACT_DESCRIPTION,
     memory=top_level_memory,
-    verbose=True,
+    verbose=False,
     handle_parsing_errors=True
 )
 
@@ -948,10 +1034,7 @@ def process_message(message_content):
     all_tools = [
         datetime_tool,
         wikipedia_tool,
-        LLM_tool,
         duckduckgo_tool,
-        Writer_agent,
-        Coder_tool,
     ] + gmail_tools + google_calendar_tools + table_tools
 
     # Create the agent with JSON-based configuration
@@ -960,7 +1043,7 @@ def process_message(message_content):
         llm=top_level_llm,
         agent=AgentType.CONVERSATIONAL_REACT_DESCRIPTION,
         memory=top_level_memory,
-        verbose=True,
+        verbose=False,
         handle_parsing_errors=True
     )
     
